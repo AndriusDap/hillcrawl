@@ -155,5 +155,6 @@ gradle-app.setting
 unzipped/
 tiles/
 images/
+osm/
 
 \.idea/

@@ -1,12 +1,14 @@
-import com.andrius.hills.preprocessing.AscReader;
-import com.andrius.hills.preprocessing.Downloader;
-import com.andrius.hills.preprocessing.ImageFactory;
-import com.andrius.hills.preprocessing.Unzipper;
+import com.andrius.hills.model.AscFile;
+import com.andrius.hills.preprocesing.Unzipper;
+import com.andrius.hills.preprocesing.asc.AscReader;
+import com.andrius.hills.preprocesing.asc.Downloader;
+import com.andrius.hills.preprocesing.asc.ImageFactory;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class App {
 
@@ -14,12 +16,21 @@ public class App {
         var logger = LogManager.getLogger("Main");
         List<File> download = new Downloader().download();
         logger.info("Downloaded {} files", download.size());
-        List<File> unzip = new Unzipper().unzip(download);
+        List<File> unzip = new Unzipper("asc/unzipped").unzip(download);
         logger.info("Unzipped {} files", unzip.size());
 
         var ascReader = new AscReader();
         var images = new ImageFactory();
 
-        unzip.parallelStream().map(ascReader::read).flatMap(Optional::stream).forEach(images::toImage);
+        List<AscFile> parts = unzip.parallelStream()
+                .map(ascReader::read)
+                .flatMap(Optional::stream)
+                .collect(Collectors.toList());
+
+        parts.forEach(images::toImage);
+
+        var file = new com.andrius.hills.preprocesing.osm.Downloader().download();
+        Unzipper osmUnzipper = new Unzipper("osm/unzipped");
+        List<File> osm = osmUnzipper.unzip(file.stream().collect(Collectors.toList()));
     }
 }
