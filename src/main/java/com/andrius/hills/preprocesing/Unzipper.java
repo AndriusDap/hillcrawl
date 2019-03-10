@@ -20,7 +20,7 @@ public class Unzipper {
 
     public List<File> unzip(List<File> download) {
         File directory = new File(folder);
-        if (directory.exists() && directory.listFiles() != null) {
+        if (directory.exists() && directory.listFiles() != null && directory.listFiles().length > 0) {
             logger.info("Returning contents of directory {}", folder);
             File[] files = directory.listFiles();
             return Arrays.asList(files);
@@ -28,9 +28,6 @@ public class Unzipper {
 
         var result = directory.mkdirs();
         logger.info("Creating output directory {}, success: {}", folder, result);
-        if (!result) {
-            return Collections.emptyList();
-        }
 
         download.parallelStream().forEach(this::unzip);
 

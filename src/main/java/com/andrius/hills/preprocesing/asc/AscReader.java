@@ -1,4 +1,4 @@
-package com.andrius.hills.preprocessing;
+package com.andrius.hills.preprocesing.asc;
 
 import com.andrius.hills.model.AscFile;
 import org.apache.logging.log4j.LogManager;

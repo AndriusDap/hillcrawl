@@ -1,6 +1,5 @@
 package com.andrius.hills.preprocesing.osm;
 
-import com.andrius.hills.model.AscFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +13,7 @@ public class Downloader {
     private Logger logger = LogManager.getLogger();
     private static final String folder = "osm";
     private static final String server = "http://download.geofabrik.de/europe/lithuania-latest.osm.bz2";
-    private static final String lt = "lt.shp.zip";
+    private static final String lt = "lt.osm.bz2";
 
     public Optional<File> download() {
         File targetDirectory = new File(folder);

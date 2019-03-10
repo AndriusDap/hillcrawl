@@ -1,4 +1,4 @@
-package com.andrius.hills.preprocessing;
+package com.andrius.hills.preprocesing.asc;
 
 import com.andrius.hills.model.AscFile;
 import org.apache.logging.log4j.LogManager;
@@ -16,10 +16,17 @@ public class ImageFactory {
 
     public Optional<File> toImage(AscFile ascFile) {
         File directory = new File(folder);
-        if(!directory.exists()) {
+        if (!directory.exists()) {
             boolean mkdirs = directory.mkdirs();
             logger.info("{} directories {}", mkdirs ? "Created" : "Failed to create", directory);
         }
+        File file = new File(folder + File.separator + ascFile.getName() + ".png");
+
+        if (file.exists()) {
+            logger.info("{} already exists as {}, returning existing value", ascFile, file);
+            return Optional.of(file);
+        }
+
         logger.info("Rendering {} into an image", ascFile);
         short[][] cells = ascFile.getCells();
         BufferedImage image = new BufferedImage(cells.length, cells[0].length, BufferedImage.TYPE_INT_RGB);
@@ -34,7 +41,6 @@ public class ImageFactory {
             }
         }
 
-        File file = new File(folder + File.separator + ascFile.getName() + ".png");
         try {
             logger.info("Saving {} as {}", ascFile, file);
             ImageIO.write(image, "png", file);
@@ -49,7 +55,7 @@ public class ImageFactory {
         short min = 0;
         for (short[] cell : cells) {
             for (short i : cell) {
-                if(min > i && i != -9999) {
+                if (min > i && i != -9999) {
                     min = i;
                 }
             }
@@ -62,7 +68,7 @@ public class ImageFactory {
         short max = cells[0][0];
         for (short[] cell : cells) {
             for (short i : cell) {
-                if(max < i) {
+                if (max < i) {
                     max = i;
                 }
             }
@@ -71,7 +77,7 @@ public class ImageFactory {
     }
 
     private int toColor(short i, short min, short max) {
-        if(i == -9999) {
+        if (i == -9999) {
             return toRgb(100, 100, 255);
         } else {
             var value = (int) (255 * ((double) i - min) / (max - min));
@@ -85,6 +91,4 @@ public class ImageFactory {
         rgb = (rgb << 8) + blue;
         return rgb;
     }
-
-
 }

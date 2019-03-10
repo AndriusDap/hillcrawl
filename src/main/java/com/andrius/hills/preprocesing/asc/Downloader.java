@@ -1,4 +1,4 @@
-package com.andrius.hills.preprocessing;
+package com.andrius.hills.preprocesing.asc;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -30,10 +30,10 @@ public class Downloader {
 
     public List<File> download(int startInclusive, int endExclusive, int startInclusive1, int endExclusive1) {
         File file = new File(folder);
-        if(!file.exists()) {
+        if (!file.exists()) {
             var result = file.mkdirs();
             logger.info("Creating output directory {}, success: {}", folder, result);
-            if(!result) {
+            if (!result) {
                 return Collections.emptyList();
             }
         }
