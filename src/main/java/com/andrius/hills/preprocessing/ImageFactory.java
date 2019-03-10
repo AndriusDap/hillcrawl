@@ -13,7 +13,7 @@ import java.util.Optional;
 public class ImageFactory {
     private Logger logger = LogManager.getLogger();
     private static final String folder = "images";
-
+    
     public Optional<File> toImage(AscFile ascFile) {
         File directory = new File(folder);
         if(!directory.exists()) {
@@ -25,11 +25,12 @@ public class ImageFactory {
         BufferedImage image = new BufferedImage(cells.length, cells[0].length, BufferedImage.TYPE_INT_RGB);
 
         short max = getMax(cells);
+        short min = getMin(cells);
 
         for (int i = 0; i < cells.length; i++) {
             short[] row = cells[i];
             for (int i1 = 0; i1 < row.length; i1++) {
-                image.setRGB(i1, i, toColor(row[i1], max));
+                image.setRGB(i1, i, toColor(row[i1], min, max));
             }
         }
 
@@ -44,6 +45,19 @@ public class ImageFactory {
         }
     }
 
+    private short getMin(short[][] cells) {
+        short min = 0;
+        for (short[] cell : cells) {
+            for (short i : cell) {
+                if(min > i && i != -9999) {
+                    min = i;
+                }
+            }
+        }
+        return min;
+
+    }
+
     private short getMax(short[][] cells) {
         short max = cells[0][0];
         for (short[] cell : cells) {
@@ -56,11 +70,11 @@ public class ImageFactory {
         return max;
     }
 
-    private int toColor(short i, short max) {
-        if(i < 0) {
-            return toColor(max, max);
+    private int toColor(short i, short min, short max) {
+        if(i == -9999) {
+            return toRgb(100, 100, 255);
         } else {
-            var value = (int) (255 * (((double) i) / max));
+            var value = (int) (255 * ((double) i - min) / (max - min));
             return toRgb(value, value, value);
         }
     }
