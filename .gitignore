@@ -151,3 +151,9 @@ gradle-app.setting
 **/build/
 
 # End of https://www.gitignore.io/api/java,gradle,windows,intellij
+
+unzipped/
+tiles/
+images/
+
+\.idea/
