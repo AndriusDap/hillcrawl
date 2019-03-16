@@ -3,8 +3,6 @@ package com.andrius.hills.preprocesing;
 import com.andrius.hills.Base;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Arrays;

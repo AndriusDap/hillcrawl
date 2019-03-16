@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.function.Function.identity;
