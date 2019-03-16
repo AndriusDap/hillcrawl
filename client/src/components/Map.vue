@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      accessToken: '',
+      accessToken: process.env.VUE_APP_MAPBOX_KEY,
       mapStyle: 'mapbox://styles/mapbox/light-v9',
       layerId: 'firstLayer',
       sourceId: 'firstSource',
