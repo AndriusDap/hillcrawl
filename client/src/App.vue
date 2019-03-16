@@ -1,28 +1,49 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Lets go up and down and up again"/>
+  <div id="app" class="tall">
+    <el-container class="tall">
+      <el-aside class="tall e-padding bg-light">
+        <div>Lets ride</div>
+      </el-aside>
+      <el-main class="tall">
+        <Map />
+      </el-main>
+    </el-container>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Map from './components/Map.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Map
   }
 }
 </script>
 
 <style>
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+.bg-light {
+  background: #e5e7e5;
+}
+
+.tall {
+  height: 100%;
+}
+
+.e-padding {
+  padding: 20px;
 }
 </style>

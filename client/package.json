@@ -8,7 +8,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "vue": "^2.6.6"
+    "element-ui": "^2.6.1",
+    "mapbox-gl": "^0.53.1",
+    "vue": "^2.6.6",
+    "vue-mapbox": "^0.2.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",
