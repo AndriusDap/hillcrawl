@@ -1,8 +1,8 @@
 package com.andrius.hills.preprocesing.asc;
 
+import com.andrius.hills.Base;
 import com.andrius.hills.model.AscFile;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.andrius.hills.preprocesing.FileManager;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -10,25 +10,29 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-public class ImageFactory {
-    private Logger logger = LogManager.getLogger();
-    private static final String folder = "images";
+public class ImageFactory implements Base {
+
+    private FileManager fileManager;
+
+    public ImageFactory(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
 
     public Optional<File> toImage(AscFile ascFile) {
-        File directory = new File(folder);
-        if (!directory.exists()) {
-            boolean mkdirs = directory.mkdirs();
-            logger.info("{} directories {}", mkdirs ? "Created" : "Failed to create", directory);
-        }
-        File file = new File(folder + File.separator + ascFile.getName() + ".png");
+        var filename = ascFile.getName() + ".png";
+        return fileManager.produce(filename, file -> {
+            logger.info("Rendering {} into an image", ascFile);
+            BufferedImage image = render(ascFile.getCells());
+            try {
+                logger.info("Saving {} as {}", ascFile, file);
+                ImageIO.write(image, "png", file);
+            } catch (IOException e) {
+                logger.error("Failed to save image as {} {}", file, e.getClass());
+            }
+        });
+    }
 
-        if (file.exists()) {
-            logger.info("{} already exists as {}, returning existing value", ascFile, file);
-            return Optional.of(file);
-        }
-
-        logger.info("Rendering {} into an image", ascFile);
-        short[][] cells = ascFile.getCells();
+    private BufferedImage render(short[][] cells) {
         BufferedImage image = new BufferedImage(cells.length, cells[0].length, BufferedImage.TYPE_INT_RGB);
 
         short max = getMax(cells);
@@ -40,15 +44,7 @@ public class ImageFactory {
                 image.setRGB(i1, i, toColor(row[i1], min, max));
             }
         }
-
-        try {
-            logger.info("Saving {} as {}", ascFile, file);
-            ImageIO.write(image, "png", file);
-            return Optional.of(file);
-        } catch (IOException e) {
-            logger.error("Failed to save image as {} {}", file, e.getClass());
-            return Optional.empty();
-        }
+        return image;
     }
 
     private short getMin(short[][] cells) {

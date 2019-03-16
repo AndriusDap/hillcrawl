@@ -1,5 +1,6 @@
 package com.andrius.hills.preprocesing;
 
+import com.andrius.hills.Base;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.logging.log4j.LogManager;
@@ -10,8 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Unzipper {
-    private Logger logger = LogManager.getLogger();
+public class Unzipper implements Base {
     private final String folder;
 
     public Unzipper(String folder) {
@@ -40,7 +40,7 @@ public class Unzipper {
         }
     }
 
-    private void unzip(File zip) {
+    public void unzip(File zip) {
         try {
             logger.info("Unzipping file {}", zip);
             ZipFile f = new ZipFile(zip);

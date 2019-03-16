@@ -1,17 +1,14 @@
 package com.andrius.hills.preprocesing.asc;
 
+import com.andrius.hills.Base;
 import com.andrius.hills.model.AscFile;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class AscReader {
-    private Logger logger = LogManager.getLogger();
-
+public class AscReader implements Base {
     public Optional<AscFile> read(File f) {
         if (!f.getAbsolutePath().endsWith(".asc")) {
             logger.info("File {} has a wrong extension for an asc file", f);
